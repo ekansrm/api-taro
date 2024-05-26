@@ -14,9 +14,15 @@
     "strictNullChecks": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "paths": {
+      "@/commons/*": ["./src/commons/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/package": ["./package.json"],
+      "@/project": ["./project.config.json"]
+    },
     "rootDir": ".",
     "jsx": "react-jsx",
-    "jsxFactory": "Taro.createElement",
     "allowJs": true,
     "resolveJsonModule": true,
     "typeRoots": [
