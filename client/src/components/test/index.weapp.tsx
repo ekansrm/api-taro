@@ -4,6 +4,6 @@ import { Component } from 'react'
 
 export default class Test extends Component {
   render() {
-    return <View>Hello world, look good </View>;
+    return <View>Hello world, 修改项目配置</View>;
   }
 }
