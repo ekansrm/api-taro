@@ -1,5 +1,12 @@
+const path = require('path')
 const config = {
   projectName: 'api-taro',
+  alias: {
+    '@/components': path.resolve(__dirname, '..', 'src/components'),
+    '@/utils': path.resolve(__dirname, '..', 'src/utils'),
+    '@/package': path.resolve(__dirname, '..', 'package.json'),
+    '@/project': path.resolve(__dirname, '..', 'project.config.json'),
+  },
   date: '2024-5-18',
   designWidth: 750,
   deviceRatio: {

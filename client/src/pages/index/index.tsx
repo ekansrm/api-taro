@@ -1,9 +1,9 @@
 import { Component, PropsWithChildren } from 'react'
-import Taro, { Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import './index.scss'
 
-import Login from '../../components/login/index'
+import Test from '@/components/test/index'
+
 
 export default class Index extends Component<PropsWithChildren> {
   componentDidMount () { }
@@ -17,7 +17,7 @@ export default class Index extends Component<PropsWithChildren> {
   render () {
     return (
       <View className='index'>
-        <Login/>
+        <Test/>
       </View>
     )
   }
