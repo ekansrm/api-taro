@@ -4,6 +4,6 @@ import { Component } from 'react'
 
 export default class Test extends Component {
   render() {
-    return <View>Hello world</View>;
+    return <View>Hello world, look good </View>;
   }
 }

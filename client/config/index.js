@@ -2,6 +2,7 @@ const path = require('path')
 const config = {
   projectName: 'api-taro',
   alias: {
+    '@/commons': path.resolve(__dirname, '..', 'src/commons'),
     '@/components': path.resolve(__dirname, '..', 'src/components'),
     '@/utils': path.resolve(__dirname, '..', 'src/utils'),
     '@/package': path.resolve(__dirname, '..', 'package.json'),
