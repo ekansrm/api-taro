@@ -1,9 +1,9 @@
-enum PropertyType {
+export enum PropertyType {
   STRING = "STRING",
   INTEGER = "INTEGER",
 }
 
-enum PropertyComparator {
+export enum PropertyComparator {
   EMPTY = "EMPTY",
   NOT_EMPTY = "NOT_EMPTY",
   EQUAL = "EQUAL",
@@ -21,14 +21,14 @@ enum PropertyComparator {
   NOT_BETWEEN = "NOT_BETWEEN",
 }
 
-enum PropertyOperator {
+export enum PropertyOperator {
   APPEND = "APPEND",
   REMOVE = "REMOVE",
   UNIQUE = "UNIQUE",
   ADD = "ADD",
 }
 
-class PropertyLabel {
+export class PropertyLabel {
   /*
   属性ID
    */
@@ -67,7 +67,7 @@ class PropertyLabel {
   }
 }
 
-class PropertyValue {
+export class PropertyValue {
   /// 属性类型
   type: PropertyType;
 
@@ -100,7 +100,7 @@ class PropertyValue {
   }
 }
 
-class PropertyEvaluator {
+export class PropertyEvaluator {
   /// 属性ID
   pid: string;
 
@@ -139,7 +139,7 @@ class PropertyEvaluator {
   }
 }
 
-class PropertyFunction {
+export class PropertyFunction {
   /// 属性ID
   pid: string;
 
