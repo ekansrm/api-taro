@@ -1,6 +1,6 @@
 import { Component, PropsWithChildren } from 'react'
 import { View } from '@tarojs/components'
-import Test from '@/components/test/index.weapp'
+import Quest from '@/components/core/ask/question/index.weapp'
 import './index.scss'
 
 
@@ -17,7 +17,7 @@ export default class Index extends Component<PropsWithChildren> {
   render () {
     return (
       <View className='index'>
-        <Test/>
+        <Quest />
       </View>
     )
   }
