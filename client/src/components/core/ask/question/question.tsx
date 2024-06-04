@@ -6,8 +6,21 @@ import { View, Text, Radio } from '@tarojs/components';
 //   type: 'single' | 'multiple';
 //   options: string[];
 // }
+//
+// interface QuestionProps {
+//   qid: string;
+//   desc: string;
+//   options: QuestionOptionProps[];
+//
+// }
+//
+// interface  QuestionOptionProps {
+//   oid: string;
+//   desc: string;
+// }
 
 const QuestionComponent = ({ question}) => {
+
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
   const handleOptionSelect = (option: string) => {
