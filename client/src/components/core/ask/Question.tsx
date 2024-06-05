@@ -1,38 +1,29 @@
-import {useState} from "react";
-import {Radio, Text, View} from '@tarojs/components';
 import {QuestionProps} from "@/components/core/ask/model/types";
+import QuestionStore from "@/components/core/ask/Question.store";
+import QuestionComponent from "@/components/core/ask/Question.component";
 
-
-function Question({desc, options}: QuestionProps) {
-
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-
-  const handleOptionSelect = (oid: string) => {
-      const index = selectedOptions.indexOf(oid);
-      if (index === -1) {
-        setSelectedOptions([...selectedOptions, oid]);
-      } else {
-        setSelectedOptions([
-          ...selectedOptions.slice(0, index),
-          ...selectedOptions.slice(index + 1),
-        ]);
-      }
-  };
-
-  return (
-    <View>
-      <Text>{desc}</Text>
-      {options.map((option) => (
-        <View key={option.oid}>
-            <Radio
-              checked={selectedOptions[0] === option.oid}
-              onClick={() => handleOptionSelect(option.oid)}
-            />
-          <Text>{option.desc}</Text>
-        </View>
-      ))}
-    </View>
-  );
+interface Props {
+  question: QuestionProps
 }
+
+const Question = ({question}: Props) => {
+
+  const store = new QuestionStore();
+  store.refresh(question);
+
+  const clickSelect = (oid: string) => {
+    store!.clickSelect(oid);
+    console.log(oid)
+  }
+
+  return  (
+    <QuestionComponent
+      clickSelect={clickSelect}
+      pick={store.pick}
+      question={question}
+    >
+    </QuestionComponent>
+  );
+};
 
 export default Question;

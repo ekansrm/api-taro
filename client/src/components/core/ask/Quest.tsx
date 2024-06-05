@@ -8,7 +8,7 @@ const Quest: React.FC<QuestProps> = ({ questions }) => {
     <View>
       {questions.map((question) => (
         <View key={question.qid}>
-            <Question qid={question.qid} desc={question.desc} options={question.options} />
+            <Question question={question} />
         </View>
       ))}
     </View>
