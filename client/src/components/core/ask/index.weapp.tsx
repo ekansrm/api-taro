@@ -1,7 +1,7 @@
 import {View} from '@tarojs/components';
 
 import {Component} from 'react'
-import Quest from "@/components/core/ask/view/quest";
+import Quest from "@/components/core/ask/Quest";
 import {questions} from "@/components/core/ask/model/mocks";
 
 export default class QuestAll extends Component {
