@@ -1,6 +1,7 @@
 import {QuestionProps} from "@/components/core/ask/model/types";
 import QuestionStore from "@/components/core/ask/Question.store";
 import QuestionComponent from "@/components/core/ask/Question.component";
+import {observer} from "mobx-react";
 
 interface Props {
   question: QuestionProps
@@ -8,7 +9,8 @@ interface Props {
 
 const Question = ({question}: Props) => {
 
-  const store = new QuestionStore();
+  const store = new QuestionStore()
+
   store.refresh(question);
 
   const clickSelect = (oid: string) => {
@@ -16,14 +18,13 @@ const Question = ({question}: Props) => {
     console.log(oid)
   }
 
-  return  (
+  return observer(() =>(
     <QuestionComponent
       clickSelect={clickSelect}
       pick={store.pick}
       question={question}
-    >
-    </QuestionComponent>
-  );
+    />
+  ));
 };
 
 export default Question;

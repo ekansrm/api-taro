@@ -5,7 +5,6 @@ interface Props {
   question: QuestionProps
   pick: {[oid:string]: boolean}
   clickSelect: (oid: string) => void
-  children?: React.ReactNode
 }
 
 const QuestionComponent = ({question, pick, clickSelect}: Props) => {
