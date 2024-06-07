@@ -1,5 +1,5 @@
 import { Component, PropsWithChildren } from 'react'
-import Taro, { Config } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 
 import './app.scss'
 

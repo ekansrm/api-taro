@@ -3,7 +3,7 @@ import React from 'react';
 import {Text, View} from '@tarojs/components';
 import {QuestionProps} from "@/components/core/ask/model/types";
 import QuestionStore from "@/components/core/ask/Question.store";
-import {observer} from "mobx-react";
+import {Observer} from "mobx-react";
 
 interface Props {
   props: QuestionProps
@@ -41,10 +41,10 @@ class QuestionComponent extends React.Component<Props> {
     const {pick, token} = state;
     console.log("render QuestionComponent Component")
 
-    return (
+    return <Observer>{()=>(
       <View>
         <Text>{props.desc}</Text>
-        <Text>{token ? 'true' : 'false'}</Text>
+        <Text>{token.get() ? 'true' : 'false'}</Text>
         {props.options.map((option) => (
           <View key={option.oid}>
             {/*<Radio*/}
@@ -55,8 +55,8 @@ class QuestionComponent extends React.Component<Props> {
           </View>
         ))}
       </View>
-    );
+    )}</Observer>;
   }
 }
 
-export default observer(QuestionComponent);
+export default QuestionComponent;

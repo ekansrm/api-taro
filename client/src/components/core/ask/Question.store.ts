@@ -6,7 +6,7 @@ class QuestionStore {
 
   @observable pick: ObservableMap<string, boolean> = observable.map({})
 
-  @observable token = false
+  @observable token = observable.box(false)
 
   @computed
   get pickA()  {
@@ -27,7 +27,7 @@ class QuestionStore {
   @action.bound
   clickSelect(oid: string) {
     this.pick[oid] = !this.pick[oid]
-    this.token = !this.token
+    this.token.set(!this.token)
   }
 
 }
