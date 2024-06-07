@@ -1,28 +1,34 @@
-import { observable } from 'mobx'
+import {action, computed, observable, ObservableMap} from 'mobx'
 
 import {QuestionProps} from "@/components/core/ask/model/types";
 
-const QuestionStore =() =>{
+class QuestionStore {
 
-  return observable({
+  @observable pick: ObservableMap<string, boolean> = observable.map({})
 
-    question: {},
+  @observable token = false
 
-    pick: {},
+  @computed
+  get pickA()  {
+    const m = new Map()
+    this.pick.forEach((v, k) => {
+      m.set(k, v)
+    })
+    return m
+  }
 
-    refresh(question: QuestionProps) {
-      this.question = question
-      this.pick = {}
-      question.options.forEach((option) => {
-        this.pick[option.oid] = false
-      })
-    },
+  @action.bound
+  refresh(question: QuestionProps) {
+    question.options.forEach((option) => {
+      this.pick[option.oid] = true
+    })
+  }
 
-    clickSelect(oid: string) {
-      this.pick[oid] = !this.pick[oid]
-    }
-
-  })
+  @action.bound
+  clickSelect(oid: string) {
+    this.pick[oid] = !this.pick[oid]
+    this.token = !this.token
+  }
 
 }
 

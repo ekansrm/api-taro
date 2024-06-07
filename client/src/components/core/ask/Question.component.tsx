@@ -1,28 +1,62 @@
-import {Radio, Text, View} from '@tarojs/components';
+// import React from '@tarojs/react';
+import React from 'react';
+import {Text, View} from '@tarojs/components';
 import {QuestionProps} from "@/components/core/ask/model/types";
+import QuestionStore from "@/components/core/ask/Question.store";
+import {observer} from "mobx-react";
 
 interface Props {
-  question: QuestionProps
-  pick: {[oid:string]: boolean}
+  props: QuestionProps
+  state: QuestionStore
   clickSelect: (oid: string) => void
 }
 
-const QuestionComponent = ({question, pick, clickSelect}: Props) => {
+// const QuestionComponent = ({props, state, clickSelect}: Props) => {
+//
+//   const {pick} = state;
+//   console.log("render QuestionComponent Component")
+//
+//   return (
+//     <View>
+//       <Text>{props.desc}</Text>
+//       {props.options.map((option) => (
+//         <View key={option.oid}>
+//           {/*<Radio*/}
+//           {/*  checked={pick[option.oid]}*/}
+//           {/*  onClick={() => clickSelect(option.oid)}*/}
+//           {/*/>*/}
+//           <Text onClick={() => clickSelect(option.oid)}>{option.desc} - {pick[option.oid] ? 'true' : 'false'}</Text>
+//         </View>
+//       ))}
+//     </View>
+//   );
+// }
+//
+// export default observer(QuestionComponent);
 
-  return (
-    <View>
-      <Text>{question.desc}</Text>
-      {question.options.map((option) => (
-        <View key={option.oid}>
-          <Radio
-            checked={pick[option.oid]}
-            onClick={() => clickSelect(option.oid)}
-          />
-          <Text>{option.desc}</Text>
-        </View>
-      ))}
-    </View>
-  );
+// @observer
+class QuestionComponent extends React.Component<Props> {
+  render() {
+    const {props, state, clickSelect} = this.props;
+    const {pick, token} = state;
+    console.log("render QuestionComponent Component")
+
+    return (
+      <View>
+        <Text>{props.desc}</Text>
+        <Text>{token ? 'true' : 'false'}</Text>
+        {props.options.map((option) => (
+          <View key={option.oid}>
+            {/*<Radio*/}
+            {/*  checked={pick[option.oid]}*/}
+            {/*  onClick={() => clickSelect(option.oid)}*/}
+            {/*/>*/}
+            <Text onClick={() => clickSelect(option.oid)}>{option.desc} - {pick[option.oid] ? 'true' : 'false'}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  }
 }
 
-export default QuestionComponent;
+export default observer(QuestionComponent);

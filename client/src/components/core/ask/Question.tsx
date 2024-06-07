@@ -1,34 +1,37 @@
 import {QuestionProps} from "@/components/core/ask/model/types";
-import QuestionComponent from "@/components/core/ask/Question.component";
 import QuestionStore from "@/components/core/ask/Question.store";
-import {observer} from "mobx-react";
+import QuestionComponent from "@/components/core/ask/Question.component";
 
 interface Props {
-  question: QuestionProps
+  question: QuestionProps,
 }
 
-const store = QuestionStore()
-
-const clickSelect = (oid: string) => {
-  store.clickSelect(oid);
-  console.log(oid, store.pick)
-}
 
 const Question = ({question}: Props) => {
 
+  const store = new QuestionStore()
 
   store.refresh(question);
+  // store.refresh(question);
 
+  const clickSelect = (oid: string) => {
+    store.clickSelect(oid);
+    console.log(store)
+    // console.log('isObservable(store.token)', isObservable(store.token))
+    // console.log('isObservable(token)', isObservable(token))
+    // console.log('isObservable(store.pick)', isObservable(store.pick))
+    // console.log('isObservable(pick)', isObservable(pick))
+  }
 
-  const {pick} = store;
+  console.log("render Question Component")
 
-  return  observer( () =>(
+  return  (
     <QuestionComponent
+      state={store}
+      props={question}
       clickSelect={clickSelect}
-      pick={pick}
-      question={question}
     />
-  ));
+  );
 };
 
 export default Question;
