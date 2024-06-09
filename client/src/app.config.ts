@@ -1,6 +1,6 @@
 export default {
   pages: [
-    'pages/test/mobx-demo-1',
+    'pages/index/index',
   ],
   window: {
     backgroundTextStyle: 'light',
