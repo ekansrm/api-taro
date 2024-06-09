@@ -1,7 +1,6 @@
 import {QuestionProps} from "@/components/core/ask/model/types";
 import QuestionStore from "@/components/core/ask/Question.store";
 import QuestionComponent from "@/components/core/ask/Question.component";
-import {observer} from "mobx-react-lite";
 
 interface Props {
   question: QuestionProps,
@@ -35,4 +34,4 @@ const Question = ({question}: Props) => {
   )
 };
 
-export default observer(Question);
+export default Question;
