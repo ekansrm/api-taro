@@ -1,11 +1,13 @@
 import {QuestionProps} from "@/components/core/ask/model/types";
 import QuestionStore from "@/components/core/ask/Question.store";
 import QuestionComponent from "@/components/core/ask/Question.component";
+import {observer} from "mobx-react-lite";
 
 interface Props {
   question: QuestionProps,
 }
 
+const QuestionComponent2 = observer(QuestionComponent)
 
 const Question = ({question}: Props) => {
 
@@ -16,19 +18,14 @@ const Question = ({question}: Props) => {
 
   const clickSelect = (oid: string) => {
     store.clickSelect(oid);
-    console.log(store)
-    // console.log('isObservable(store.token)', isObservable(store.token))
-    // console.log('isObservable(token)', isObservable(token))
-    // console.log('isObservable(store.pick)', isObservable(store.pick))
-    // console.log('isObservable(pick)', isObservable(pick))
   }
+  const {pick} = store
 
   console.log("render Question Component")
 
   return  (
-    <QuestionComponent
-      state={store}
-      props={question}
+    <QuestionComponent2
+      desc={question.desc} optionSelected={pick} options={question.options} qid={question.qid}
       clickSelect={clickSelect}
     />
   )
