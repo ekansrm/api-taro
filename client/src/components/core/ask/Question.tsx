@@ -1,17 +1,17 @@
 import {QuestionProps} from "@/components/core/ask/model/types";
-import QuestionStore from "@/components/core/ask/Question.store";
-import QuestionComponent from "@/components/core/ask/Question.component";
+import QuestionState from "@/components/core/ask/QuestionState";
+import QuestionView from "@/components/core/ask/QuestionView";
 import {observer} from "mobx-react-lite";
 
 interface Props {
   question: QuestionProps,
 }
 
-const QuestionComponent2 = observer(QuestionComponent)
+const QuestionObserver = observer(QuestionView)
 
 const Question = ({question}: Props) => {
 
-  const store = new QuestionStore()
+  const store = new QuestionState()
 
   store.refresh(question);
   // store.refresh(question);
@@ -24,11 +24,15 @@ const Question = ({question}: Props) => {
   console.log("render Question Component")
 
   return  (
-    <QuestionComponent2
+    <QuestionObserver
       desc={question.desc} optionSelected={pick} options={question.options} qid={question.qid}
       clickSelect={clickSelect}
     />
   )
+  // return (<Observer>{()=><QuestionView
+  //   desc={question.desc} optionSelected={pick} options={question.options} qid={question.qid}
+  //   clickSelect={clickSelect}
+  // />}</Observer>)
 };
 
 export default Question;

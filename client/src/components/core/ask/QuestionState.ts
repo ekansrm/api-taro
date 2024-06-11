@@ -2,7 +2,7 @@ import {makeAutoObservable, observable} from 'mobx'
 
 import {QuestionProps} from "@/components/core/ask/model/types";
 
-class QuestionStore {
+class QuestionState {
 
   constructor() {
     makeAutoObservable(this)
@@ -26,4 +26,4 @@ class QuestionStore {
 
 }
 
-export default QuestionStore;
+export default QuestionState;

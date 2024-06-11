@@ -9,9 +9,9 @@ interface Props {
   clickSelect: (oid: string) => void
 }
 
-const QuestionComponent = ({desc, options, optionSelected, clickSelect}: Props) => {
+const QuestionView = ({desc, options, optionSelected, clickSelect}: Props) => {
 
-  console.log("render QuestionComponent Component")
+  console.log("render QuestionView Component")
 
   return (
     <View>
@@ -29,4 +29,4 @@ const QuestionComponent = ({desc, options, optionSelected, clickSelect}: Props) 
   );
 }
 
-export default QuestionComponent;
+export default QuestionView;
