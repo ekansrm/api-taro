@@ -1,15 +1,15 @@
-export interface QuestionProps {
+export interface QuestionData {
   qid: string;
   desc: string;
-  options: QuestionOptionProps[];
+  options: QuestionOptionData[];
 
 }
 
-export interface QuestionOptionProps {
+export interface QuestionOptionData {
   oid: string;
   desc: string;
 }
 
-export interface QuestProps {
-  questions: QuestionProps[];
+export interface QuestData {
+  questions: QuestionData[];
 }

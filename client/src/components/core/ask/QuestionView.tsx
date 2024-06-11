@@ -1,10 +1,10 @@
 import {Text, View} from '@tarojs/components';
-import {QuestionOptionProps} from "@/components/core/ask/model/types";
+import {QuestionOptionData} from "@/components/core/ask/model/types";
 
 interface Props {
   qid: string;
   desc: string;
-  options: QuestionOptionProps[];
+  options: QuestionOptionData[];
   optionSelected: {[oid: string]: boolean};
   clickSelect: (oid: string) => void
 }

@@ -1,6 +1,6 @@
 import {makeAutoObservable, observable} from 'mobx'
 
-import {QuestionProps} from "@/components/core/ask/model/types";
+import {QuestionData} from "@/components/core/ask/model/types";
 
 class QuestionState {
 
@@ -13,7 +13,7 @@ class QuestionState {
 
   token = observable.box(false)
 
-  refresh(question: QuestionProps) {
+  refresh(question: QuestionData) {
     question.options.forEach((option) => {
       this.pick[option.oid] = true
     })

@@ -1,13 +1,14 @@
-import {QuestionProps} from "@/components/core/ask/model/types";
+import {QuestionData} from "@/components/core/ask/model/types";
 import QuestionState from "@/components/core/ask/QuestionState";
 import QuestionView from "@/components/core/ask/QuestionView";
 import {observer} from "mobx-react-lite";
 
 interface Props {
-  question: QuestionProps,
+  question: QuestionData,
 }
 
 const QuestionObserver = observer(QuestionView)
+
 
 const Question = ({question}: Props) => {
 
