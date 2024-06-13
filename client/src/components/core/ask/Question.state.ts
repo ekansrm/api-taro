@@ -1,4 +1,4 @@
-import {makeAutoObservable, observable} from 'mobx'
+import {makeAutoObservable} from 'mobx'
 
 import {QuestionData} from "@/components/core/ask/model/types";
 
@@ -11,17 +11,14 @@ class QuestionState {
   // pick: ObservableMap<string, boolean> = observable.map({})
   pick = {}
 
-  token = observable.box(false)
-
   refresh(question: QuestionData) {
     question.options.forEach((option) => {
-      this.pick[option.oid] = true
+      this.pick[option.oid] = false
     })
   }
 
   clickSelect(oid: string) {
     this.pick[oid] = !this.pick[oid]
-    this.token.set(!this.token)
   }
 
 }

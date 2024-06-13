@@ -1,9 +1,9 @@
 import {View} from '@tarojs/components';
 
-import Quest from "@/components/core/ask/Quest";
+import Quest from "@/components/core/ask/Quest.index";
 import {questions} from "@/components/core/ask/model/mocks";
 
-const QuestAll = () => {
+const Ask = () => {
   return (
     <View>
       <Quest
@@ -13,4 +13,4 @@ const QuestAll = () => {
   )
 }
 
-export default QuestAll;
+export default Ask;

@@ -12,7 +12,7 @@ import {size} from "lodash";
 
 export class AskContext {
 
-  // 问题集合, {qid: Question}
+  // 问题集合, {qid: QuestionIndex}
 
   question: {[qid: string]: Question} = {}
 

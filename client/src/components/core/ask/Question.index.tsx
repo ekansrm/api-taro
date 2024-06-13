@@ -1,16 +1,17 @@
 import {QuestionData} from "@/components/core/ask/model/types";
-import QuestionState from "@/components/core/ask/QuestionState";
-import QuestionView from "@/components/core/ask/QuestionView";
+import QuestionState from "@/components/core/ask/Question.state";
+import QuestionView from "@/components/core/ask/Question.view";
 import {observer} from "mobx-react-lite";
 
 interface Props {
   question: QuestionData,
+  answered: boolean
 }
 
 const QuestionObserver = observer(QuestionView)
 
 
-const Question = ({question}: Props) => {
+const Question = ({question, answered}: Props) => {
 
   const store = new QuestionState()
 
@@ -22,12 +23,17 @@ const Question = ({question}: Props) => {
   }
   const {pick} = store
 
-  console.log("render Question Component")
+  console.log("render QuestionIndex Component")
 
   return  (
     <QuestionObserver
-      desc={question.desc} optionSelected={pick} options={question.options} qid={question.qid}
+      qid={question.qid}
+      desc={question.desc}
+      options={question.options}
+      multiSelection={question.multiSelection}
+      optionSelected={pick}
       clickSelect={clickSelect}
+      answered={answered}
     />
   )
   // return (<Observer>{()=><QuestionView
