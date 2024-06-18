@@ -21,6 +21,7 @@ class QuestState {
   initAnswered(qidList: string[]) {
     qidList.forEach(qid => {
       this.answered[qid] = false;
+      this.optionSelected[qid] = {};
     });
   }
 
