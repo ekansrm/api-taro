@@ -17,6 +17,12 @@ class QuestionState {
     })
   }
 
+  initial(optionSeleted: {[oid: string]: boolean}) {
+    Object.keys(optionSeleted).forEach((oid) => {
+      this.pick[oid] = optionSeleted[oid]
+    });
+  }
+
   clickSelect(oid: string) {
     this.pick[oid] = !this.pick[oid]
   }
