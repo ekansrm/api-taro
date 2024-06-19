@@ -13,32 +13,18 @@ interface Props {
 
 const QuestionObserver = observer(QuestionView)
 
-
-const buildOptionChosenInitial = (optionChosen: { [oid: string]: boolean }, questionData: QuestionData) => {
-
-  const rst = {}
-  questionData.options.forEach((option) => {
-    if(optionChosen[option.oid]){
-      rst[option.oid] = optionChosen[option.oid]
-    } else {
-      rst[option.oid] = false
-    }
-  });
-  return rst
-}
-
 const Question = ({questionData, questionOptionChosen, questionAnswered, onClickQuestionAffirm, onClickQuestionOption, }: Props) => {
-  const intactQuestionOptionChosenInit  = buildOptionChosenInitial(questionOptionChosen, questionData)
 
   const store = new QuestionState()
+  const {optionChosen} = store
+
+  const intactQuestionOptionChosenInit  = buildOptionChosenInitial(questionOptionChosen, questionData)
   store.init(intactQuestionOptionChosenInit);
 
   const clickOptionHandler = (oid: string) => {
     store.clickOption(oid);
     onClickQuestionOption(oid)
   }
-
-  const {optionChosen} = store
 
   return  (
     <QuestionObserver
@@ -54,5 +40,18 @@ const Question = ({questionData, questionOptionChosen, questionAnswered, onClick
   //   clickSelect={clickSelect}
   // />}</Observer>)
 };
+
+const buildOptionChosenInitial = (optionChosen: { [oid: string]: boolean }, questionData: QuestionData) => {
+
+  const rst = {}
+  questionData.options.forEach((option) => {
+    if(optionChosen[option.oid]){
+      rst[option.oid] = optionChosen[option.oid]
+    } else {
+      rst[option.oid] = false
+    }
+  });
+  return rst
+}
 
 export default Question;

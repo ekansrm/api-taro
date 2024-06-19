@@ -12,11 +12,13 @@ const QuestObserver = observer(QuestView);
 
 const Quest = ({ questionDataList }: Props) => {
 
-  const qidList = questionDataList.map(q => q.qid);
+  console.log('11')
 
   const questState = new QuestState();
 
-  questState.init(qidList);
+  const {questionAnswered, questionOptionChosen} = questState;
+
+  const qidList = questionDataList.map(q => q.qid);
 
   const questionDict: {[qid:string]: QuestionData} = questionDataList.reduce(
     (acc, q) => {
@@ -25,12 +27,15 @@ const Quest = ({ questionDataList }: Props) => {
     }, {}
   );
 
+
+  questState.init(qidList);
+
   // 需要在这包一下，不然会访问不到 store
   const questionAffirmHandler = (qid: string) => {
     questState.setQuestionAnswered(qid, true);
   }
 
-  const clickOption = (qid: string, oid: string) => {
+  const questionOptionClickHandler = (qid: string, oid: string) => {
 
     if(questState.questionOptionChosen[qid][oid]){
       questState.setQuestionOptionChosen(qid, oid, false);
@@ -46,29 +51,33 @@ const Quest = ({ questionDataList }: Props) => {
     if(questState.questionAnswered[qid]){
       if(questionDict[qid].isMCQ){
         questState.setQuestionAnswered(qid, false)
+      } else {
+        if(!questState.questionOptionChosen[qid][oid]){
+          questState.setQuestionAnswered(qid, false)
+        }
       }
 
     }
   }
 
-  const {questionAnswered, questionOptionChosen} = questState;
+  const questionPackBuilder = (question: QuestionData) => {
+
+    return {
+      questionView: <Question
+        questionData={question}
+        questionAnswered={questionAnswered[question.qid]}
+        questionOptionChosen={questionOptionChosen[question.qid]}
+        onClickQuestionAffirm={() => questionAffirmHandler(question.qid)}
+        onClickQuestionOption={(oid:string) => {questionOptionClickHandler(question.qid, oid)}}
+      />,
+    }
+
+  }
 
   return (
     <QuestObserver
       questionDataList={questionDataList}
-      questionPackBuilder={
-        (question) => {
-          return {
-            questionView: <Question
-              questionData={question}
-              questionAnswered={questionAnswered[question.qid]}
-              questionOptionChosen={questionOptionChosen[question.qid]}
-              onClickQuestionAffirm={() => questionAffirmHandler(question.qid)}
-              onClickQuestionOption={(oid:string) => {clickOption(question.qid, oid)}}
-            />,
-          }
-        }
-      }
+      questionPackBuilder={questionPackBuilder}
     />
   );
 };
