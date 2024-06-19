@@ -4,42 +4,49 @@ import QuestionView from "@/components/core/ask/Question.view";
 import {observer} from "mobx-react-lite";
 
 interface Props {
-  question: QuestionData,
-  answered: boolean,
-  clickAnswer: () => void,
-  selectedOption: {[oid: string]: boolean},
-  selectOption: (oid: String) => void,
+  questionData: QuestionData,
+  questionAnswered: boolean,
+  questionOptionChosen: {[oid: string]: boolean},
+  onClickQuestionAffirm: () => void,
+  onClickQuestionOption: (oid: String) => void,
 }
 
 const QuestionObserver = observer(QuestionView)
 
 
-const Question = ({question, clickAnswer, selectOption, selectedOption, answered}: Props) => {
+const buildOptionChosenInitial = (optionChosen: { [oid: string]: boolean }, questionData: QuestionData) => {
+
+  const rst = {}
+  questionData.options.forEach((option) => {
+    if(optionChosen[option.oid]){
+      rst[option.oid] = optionChosen[option.oid]
+    } else {
+      rst[option.oid] = false
+    }
+  });
+  return rst
+}
+
+const Question = ({questionData, questionOptionChosen, questionAnswered, onClickQuestionAffirm, onClickQuestionOption, }: Props) => {
+  const intactQuestionOptionChosenInit  = buildOptionChosenInitial(questionOptionChosen, questionData)
 
   const store = new QuestionState()
+  store.init(intactQuestionOptionChosenInit);
 
-  store.refresh(question);
-  store.initial(selectedOption);
-  // store.refresh(question);
-
-  const clickSelect = (oid: string) => {
-    store.clickSelect(oid);
-    selectOption(oid)
+  const clickOptionHandler = (oid: string) => {
+    store.clickOption(oid);
+    onClickQuestionOption(oid)
   }
-  const {pick} = store
 
-  // console.log("render QuestionIndex Component")
+  const {optionChosen} = store
 
   return  (
     <QuestionObserver
-      qid={question.qid}
-      desc={question.desc}
-      options={question.options}
-      multiSelection={question.multiSelection}
-      optionSelected={pick}
-      clickSelect={clickSelect}
-      answered={answered}
-      clickAnswer={clickAnswer}
+      questionData={questionData}
+      questionOptionChosen={optionChosen}
+      questionAnswered={questionAnswered}
+      onClickOption={clickOptionHandler}
+      onClickAffirm={onClickQuestionAffirm}
     />
   )
   // return (<Observer>{()=><QuestionView

@@ -9,22 +9,22 @@ class QuestionState {
   }
 
   // pick: ObservableMap<string, boolean> = observable.map({})
-  pick = {}
+  optionChosen = {}
 
   refresh(question: QuestionData) {
     question.options.forEach((option) => {
-      this.pick[option.oid] = false
+      this.optionChosen[option.oid] = false
     })
   }
 
-  initial(optionSeleted: {[oid: string]: boolean}) {
-    Object.keys(optionSeleted).forEach((oid) => {
-      this.pick[oid] = optionSeleted[oid]
+  init(optionChosen: {[oid: string]: boolean}) {
+    Object.keys(optionChosen).forEach((oid) => {
+      this.optionChosen[oid] = optionChosen[oid]
     });
   }
 
-  clickSelect(oid: string) {
-    this.pick[oid] = !this.pick[oid]
+  clickOption(oid: string) {
+    this.optionChosen[oid] = !this.optionChosen[oid]
   }
 
 }

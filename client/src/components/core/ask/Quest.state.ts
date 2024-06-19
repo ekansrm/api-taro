@@ -7,31 +7,26 @@ class QuestState {
     makeAutoObservable(this);
   }
 
-  answered: {[qid:string]: boolean} = {};
+  questionAnswered: {[qid:string]: boolean} = {};
 
-  optionSelected: {[qid:string]:{[oid:string]:boolean}} = {};
+  questionOptionChosen: {[qid:string]:{[oid:string]:boolean}} = {};
 
-  selectOption(qid: string, oid: string) {
-    if(this.optionSelected[qid] === undefined) {
-      this.optionSelected[qid] = {};
-    }
-    this.optionSelected[qid][oid] = !this.optionSelected[qid][oid];
-  }
-
-  initAnswered(qidList: string[]) {
+  init(qidList: string[]) {
     qidList.forEach(qid => {
-      this.answered[qid] = false;
-      this.optionSelected[qid] = {};
+      this.questionAnswered[qid] = false;
+      this.questionOptionChosen[qid] = {};
     });
   }
 
-  answer(qid: string) {
-    this.answered[qid] = true;
-    console.log(this.answered)
+  setQuestionOptionChosen(qid: string, oid: string, value: boolean) {
+    if(this.questionOptionChosen[qid] === undefined) {
+      this.questionOptionChosen[qid] = {};
+    }
+    this.questionOptionChosen[qid][oid] = value;
   }
 
-  retract(qid: string) {
-    this.answered[qid] = false;
+  setQuestionAnswered(qid: string, value: boolean) {
+    this.questionAnswered[qid] = value;
   }
 
 }

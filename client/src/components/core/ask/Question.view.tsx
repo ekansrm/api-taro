@@ -1,36 +1,34 @@
 import {Button, Text, View} from '@tarojs/components';
-import {QuestionOptionData} from "@/components/core/ask/model/types";
+import {QuestionData} from "@/components/core/ask/model/types";
 
 interface Props {
 
-  qid: string;
-  desc: string;
-  options: QuestionOptionData[];
-  multiSelection: boolean;
+  questionData: QuestionData,
 
-  optionSelected: {[oid: string]: boolean};
-  clickSelect: (oid: string) => void
-  clickAnswer: () => void
+  questionAnswered: boolean
+  questionOptionChosen: {[oid: string]: boolean};
 
-  answered: boolean
+  onClickOption: (oid: string) => void
+  onClickAffirm: () => void
+
 
 }
 
-const QuestionView = ({desc, options, multiSelection, optionSelected, clickSelect, clickAnswer, answered}: Props) => {
+const QuestionView = ({ questionData, questionAnswered, questionOptionChosen,
+                        onClickOption, onClickAffirm}: Props) => {
 
-  // console.log("render QuestionView Component")
-  const hasSelectedOption = Object.values(optionSelected).some((selected) => selected);
+  const hasChosenOption = Object.values(questionOptionChosen).some((selected) => selected);
 
 
   return (
     <View>
-      <Text>{desc} - {answered? '已答': '未答'}</Text>
-      {options.map((option) => (
+      <Text>{questionData.desc} - {questionAnswered? '已答': '未答'}</Text>
+      {questionData.options.map((option) => (
         <View key={option.oid}>
-          <Text onClick={() => clickSelect(option.oid)}>{option.desc} - {optionSelected[option.oid] ? 'true' : 'false'}</Text>
+          <Text onClick={() => onClickOption(option.oid)}>{option.desc} - {questionOptionChosen[option.oid] ? 'true' : 'false'}</Text>
         </View>
       ))}
-      {hasSelectedOption && multiSelection && !answered && <Button onClick={() =>clickAnswer()}>确定</Button>}
+      {hasChosenOption && questionData.isMCQ && !questionAnswered && <Button onClick={() =>onClickAffirm()}>确定</Button>}
     </View>
   );
 }

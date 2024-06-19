@@ -7,7 +7,7 @@ const Ask = () => {
   return (
     <View>
       <Quest
-        questions={questions}
+        questionDataList={questions}
       />
     </View>
   )

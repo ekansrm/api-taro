@@ -12,7 +12,9 @@ interface QuestionPack {
 interface Props {
 
   questionDataList: QuestionData[];
+  
   questionPackBuilder: (question: QuestionData) => QuestionPack;
+
 }
 
 
