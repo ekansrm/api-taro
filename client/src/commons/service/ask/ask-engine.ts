@@ -1,35 +1,15 @@
-import { Question } from '@/commons/model/ask/question';
+import {Question} from '@/commons/model/ask/question';
 import {
-  PropertyType,
-  PropertyValue,
-  PropertyEvaluator,
   PropertyComparator,
+  PropertyEvaluator,
   PropertyFunction,
-  PropertyOperator
+  PropertyOperator,
+  PropertyType,
+  PropertyValue
 } from '@/commons/model/ask/property';
 import {size} from "lodash";
+import {AskContext} from "@/commons/service/ask/ask-context";
 
-
-export class AskContext {
-
-  // 问题集合, {qid: QuestionIndex}
-
-  questions: {[qid: string]: Question} = {}
-
-  // 属性集合, {pid: PropertyValue}
-  propertyCache: {[pid: string]: PropertyValue} = {}
-
-  propertyCacheHistory: {[qNum: string]: {[pid: string]: PropertyValue}} = {}
-
-  // 回答次序， [qid]
-
-  questionLog: {[qid: string]: number} = {}
-
-  // 回答选项， {qid: [oid]}
-
-  questionOptionChosen: {[qid: string]: string} = {}
-
-}
 
 function processPropertyFunction(func: PropertyFunction, value: PropertyValue): PropertyValue {
   switch (func.operator) {
@@ -142,7 +122,7 @@ export function route(context: AskContext): string  {
   let maxWeight: number = 0;
 
   for (const question of Object.values(context.questions)) {
-    const rst: {blocks: number, prefer:number, }  = evaluateQuestion(context.propertyCache, question);
+    const rst: {blocks: number, prefer:number, }  = evaluateQuestion(context.propertyPool, question);
 
     if(rst.blocks > 0){
       continue
@@ -161,17 +141,17 @@ export function route(context: AskContext): string  {
 export function rollback(context: AskContext, qNum: number): void {
 
   // 移除回答次序, questionLog[qid] > qNum 的值删除掉
-  for (const [qid, qNum2] of Object.entries(context.questionLog)) {
+  for (const [qid, qNum2] of Object.entries(context.questionAnsweredOrder)) {
     if(qNum2 > qNum) {
-      delete context.questionLog[qid];
+      delete context.questionAnsweredOrder[qid];
       delete context.questionOptionChosen[qid];
-      delete context.propertyCacheHistory[qNum2]
+      delete context.propertyPoolHistory[qNum2]
     }
   }
 
   // 恢复属性池
 
-  context.propertyCache = context.propertyCacheHistory[qNum];
+  context.propertyPool = context.propertyPoolHistory[qNum];
 
 }
 
@@ -193,13 +173,13 @@ export function evaluate(context: AskContext, qid: string, oid: string): void {
 
   // 逐个处理属性操作
   for (const propertyFunction of option.propertyFunctions) {
-    const oldPropertyValue = context.propertyCache[propertyFunction.pid];
+    const oldPropertyValue = context.propertyPool[propertyFunction.pid];
     const newPropertyValue = processPropertyFunction(propertyFunction, oldPropertyValue);
-    context.propertyCache[propertyFunction.pid] = newPropertyValue;
+    context.propertyPool[propertyFunction.pid] = newPropertyValue;
   }
 
   // 记录回答次序
-  context.questionLog[qid] = size(context.questionLog) + 1;
+  context.questionAnsweredOrder[qid] = size(context.questionAnsweredOrder) + 1;
 
   context.questionOptionChosen[qid] = oid;
 
