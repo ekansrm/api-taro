@@ -62,16 +62,13 @@ const Quest = ({ questionDataList }: Props) => {
 
   const questionPackBuilder = (question: QuestionData) => {
 
-    return {
-      questionView: <Question
-        questionData={question}
-        questionAnswered={questionAnswered[question.qid]}
-        questionOptionChosen={questionOptionChosen[question.qid]}
-        onClickQuestionAffirm={() => questionAffirmHandler(question.qid)}
-        onClickQuestionOption={(oid:string) => {questionOptionClickHandler(question.qid, oid)}}
-      />,
-    }
-
+    return <Question
+      questionData={question}
+      questionAnswered={questionAnswered[question.qid]}
+      questionOptionChosen={questionOptionChosen[question.qid]}
+      onClickQuestionAffirm={() => questionAffirmHandler(question.qid)}
+      onClickQuestionOption={(oid:string) => {questionOptionClickHandler(question.qid, oid)}}
+    />;
   }
 
   return (
