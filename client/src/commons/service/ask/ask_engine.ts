@@ -14,7 +14,7 @@ export class AskContext {
 
   // 问题集合, {qid: QuestionIndex}
 
-  question: {[qid: string]: Question} = {}
+  questions: {[qid: string]: Question} = {}
 
   // 属性集合, {pid: PropertyValue}
   propertyCache: {[pid: string]: PropertyValue} = {}
@@ -27,7 +27,7 @@ export class AskContext {
 
   // 回答选项， {qid: [oid]}
 
-  questionAnswer: {[qid: string]: string} = {}
+  questionOptionChosen: {[qid: string]: string} = {}
 
 }
 
@@ -53,10 +53,7 @@ function evaluateProperty(property: PropertyEvaluator, value: PropertyValue): bo
 
   // 如果属性值为空，且比较器为不存在, 返回 True
   if (value == null) {
-    if( property.operator === PropertyComparator.EMPTY) {
-      return true;
-    }
-    return false;
+    return property.operator === PropertyComparator.EMPTY;
   }
 
   switch (property.operator) {
@@ -108,7 +105,7 @@ function evaluateProperty(property: PropertyEvaluator, value: PropertyValue): bo
   }
 }
 
-function proertyEvaluateWeight(propertyCache: {[pid: string]: PropertyValue}, evaluatorList: PropertyEvaluator[]): number {
+function propertyEvaluateWeight(propertyCache: {[pid: string]: PropertyValue}, evaluatorList: PropertyEvaluator[]): number {
 
   var totalWeight = 0;
   evaluatorList.map(evaluator =>{
@@ -122,27 +119,13 @@ function proertyEvaluateWeight(propertyCache: {[pid: string]: PropertyValue}, ev
   return totalWeight;
 }
 
-// function proertyEvaluateHit(propertyCache: {[pid: string]: PropertyValue}, evaluatorList: PropertyEvaluator[]): boolean {
-//   // 遍历属性 evaluatorList, 如果存在一个 evaluateProperty(evaluator, proertyValue)为 true, 就马上返回 true
-//
-//   for (const evaluator of evaluatorList) {
-//     var proertyValue = propertyCache[evaluator.pid];
-//     if(evaluateProperty(evaluator, proertyValue)) {
-//       return true;
-//     }
-//   }
-//   return false;
-//
-// }
-
-
-function evalueteQuestion( propertyCache: {[pid: string]: PropertyValue}, quesion: Question): {
+function evaluateQuestion(propertyCache: {[pid: string]: PropertyValue}, question: Question): {
   prefer: number;
   blocks: number
 } {
 
-  var weightBlock = proertyEvaluateWeight(propertyCache, quesion.propertyBlocks);
-  var weightPrefer = proertyEvaluateWeight(propertyCache, quesion.propertyPrefer);
+  const weightBlock = propertyEvaluateWeight(propertyCache, question.propertyBlocks);
+  const weightPrefer = propertyEvaluateWeight(propertyCache, question.propertyPrefer);
 
   return {
     blocks: weightBlock,
@@ -155,11 +138,11 @@ function evalueteQuestion( propertyCache: {[pid: string]: PropertyValue}, quesio
 export function route(context: AskContext): string  {
 
   // 遍历所有问题，找到优先级最高的问题，且没有被 Block 的，返回该问题 ID
-  var qid: string = '';
-  var maxWeight: number = 0;
+  let qid: string = '';
+  let maxWeight: number = 0;
 
-  for (const question of Object.values(context.question)) {
-    var rst: {blocks: number, prefer:number, }  = evalueteQuestion(context.propertyCache, question);
+  for (const question of Object.values(context.questions)) {
+    const rst: {blocks: number, prefer:number, }  = evaluateQuestion(context.propertyCache, question);
 
     if(rst.blocks > 0){
       continue
@@ -181,7 +164,7 @@ export function rollback(context: AskContext, qNum: number): void {
   for (const [qid, qNum2] of Object.entries(context.questionLog)) {
     if(qNum2 > qNum) {
       delete context.questionLog[qid];
-      delete context.questionAnswer[qid];
+      delete context.questionOptionChosen[qid];
       delete context.propertyCacheHistory[qNum2]
     }
   }
@@ -196,13 +179,13 @@ export function rollback(context: AskContext, qNum: number): void {
 export function evaluate(context: AskContext, qid: string, oid: string): void {
 
   // 获取问题
-  var question = context.question[qid];
+  const question = context.questions[qid];
 
   // 获取回答选项
-  var options = question.options;
+  const options = question.options;
 
   // 根据 oid, 找出 QuestionOption
-  var option = options.find((e) => e.oid === oid);
+  const option = options.find((e) => e.oid === oid);
 
   if (option == null) {
     return
@@ -210,15 +193,15 @@ export function evaluate(context: AskContext, qid: string, oid: string): void {
 
   // 逐个处理属性操作
   for (const propertyFunction of option.propertyFunctions) {
-    var oldPropertyValue = context.propertyCache[propertyFunction.pid];
-    var newPropertyValue = processPropertyFunction(propertyFunction, oldPropertyValue);
+    const oldPropertyValue = context.propertyCache[propertyFunction.pid];
+    const newPropertyValue = processPropertyFunction(propertyFunction, oldPropertyValue);
     context.propertyCache[propertyFunction.pid] = newPropertyValue;
   }
 
   // 记录回答次序
   context.questionLog[qid] = size(context.questionLog) + 1;
 
-  context.questionAnswer[qid] = oid;
+  context.questionOptionChosen[qid] = oid;
 
 }
 
