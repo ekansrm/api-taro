@@ -12,10 +12,13 @@ export class AskContext {
   // 属性集合历史
   propertyPoolHistory: { [qNum: string]: { [pid: string]: PropertyValue } } = {}
 
+
+  questionAnswered: {[qid:string]: boolean} = {};
+
   // 回答次序， [qid]
   questionAnsweredOrder: { [qid: string]: number } = {}
 
   // 回答选项， {qid: [oid]}
-  questionOptionChosen: { [qid: string]: string } = {}
+  questionOptionChosen: { [qid: string]: {[oid:string]:boolean} } = {}
 
 }

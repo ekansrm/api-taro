@@ -11,6 +11,8 @@ import {size} from "lodash";
 import {AskContext} from "@/commons/service/ask/ask-context";
 
 
+
+
 function processPropertyFunction(func: PropertyFunction, value: PropertyValue): PropertyValue {
   switch (func.operator) {
     case PropertyOperator.APPEND:
@@ -99,10 +101,7 @@ function propertyEvaluateWeight(propertyCache: {[pid: string]: PropertyValue}, e
   return totalWeight;
 }
 
-function evaluateQuestion(propertyCache: {[pid: string]: PropertyValue}, question: Question): {
-  prefer: number;
-  blocks: number
-} {
+function evaluateQuestion(propertyCache: {[pid: string]: PropertyValue}, question: Question): { prefer: number; blocks: number } {
 
   const weightBlock = propertyEvaluateWeight(propertyCache, question.propertyBlocks);
   const weightPrefer = propertyEvaluateWeight(propertyCache, question.propertyPrefer);
@@ -114,7 +113,6 @@ function evaluateQuestion(propertyCache: {[pid: string]: PropertyValue}, questio
 
 }
 
-// 获取下一个问题
 export function route(context: AskContext): string  {
 
   // 遍历所有问题，找到优先级最高的问题，且没有被 Block 的，返回该问题 ID
@@ -146,6 +144,7 @@ export function rollback(context: AskContext, qNum: number): void {
       delete context.questionAnsweredOrder[qid];
       delete context.questionOptionChosen[qid];
       delete context.propertyPoolHistory[qNum2]
+      context.questionAnswered[qid] = false;
     }
   }
 
@@ -155,8 +154,7 @@ export function rollback(context: AskContext, qNum: number): void {
 
 }
 
-
-export function evaluate(context: AskContext, qid: string, oid: string): void {
+export function evaluate(context: AskContext, qid: string, oidList: string[]): void {
 
   // 获取问题
   const question = context.questions[qid];
@@ -164,24 +162,32 @@ export function evaluate(context: AskContext, qid: string, oid: string): void {
   // 获取回答选项
   const options = question.options;
 
-  // 根据 oid, 找出 QuestionOption
-  const option = options.find((e) => e.oid === oid);
+  oidList.forEach( (oid) => {
+      // 根据 oid, 找出 QuestionOption
+      const option = options.find((e) => e.oid === oid);
 
-  if (option == null) {
-    return
-  }
+      if (option == null) {
+        return
+      }
 
-  // 逐个处理属性操作
-  for (const propertyFunction of option.propertyFunctions) {
-    const oldPropertyValue = context.propertyPool[propertyFunction.pid];
-    const newPropertyValue = processPropertyFunction(propertyFunction, oldPropertyValue);
-    context.propertyPool[propertyFunction.pid] = newPropertyValue;
-  }
+      // 逐个处理属性操作
+      for (const propertyFunction of option.propertyFunctions) {
+        const oldPropertyValue = context.propertyPool[propertyFunction.pid];
+        const newPropertyValue = processPropertyFunction(propertyFunction, oldPropertyValue);
+        context.propertyPool[propertyFunction.pid] = newPropertyValue;
+      }
+
+    context.questionOptionChosen[qid][oid] = true;
+
+    }
+
+  )
+
 
   // 记录回答次序
+  context.questionAnswered[qid] = true;
   context.questionAnsweredOrder[qid] = size(context.questionAnsweredOrder) + 1;
 
-  context.questionOptionChosen[qid] = oid;
 
 }
 
