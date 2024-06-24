@@ -1,12 +1,13 @@
 import {Button, Text, View} from '@tarojs/components';
 import {QuestionData} from "@/components/core/ask/model/types";
+import QuestionState from "@/components/core/ask/Question.state";
 
 interface Props {
 
-  questionData: QuestionData,
+  state: QuestionState,
 
+  questionData: QuestionData,
   questionAnswered: boolean
-  questionOptionChosen: {[oid: string]: boolean};
 
   onClickOption: (oid: string) => void
   onClickAffirm: () => void
@@ -14,10 +15,10 @@ interface Props {
 
 }
 
-const QuestionView = ({ questionData, questionAnswered, questionOptionChosen,
+const QuestionView = ({ state, questionData, questionAnswered,
                         onClickOption, onClickAffirm}: Props) => {
 
-  const hasChosenOption = Object.values(questionOptionChosen).some((selected) => selected);
+  const hasChosenOption = Object.values(state.optionChosen).some((selected) => selected);
 
 
   return (
@@ -25,7 +26,7 @@ const QuestionView = ({ questionData, questionAnswered, questionOptionChosen,
       <Text>{questionData.desc} - {questionAnswered? '已答': '未答'}</Text>
       {questionData.options.map((option) => (
         <View key={option.oid}>
-          <Text onClick={() => onClickOption(option.oid)}>{option.desc} - {questionOptionChosen[option.oid] ? 'true' : 'false'}</Text>
+          <Text onClick={() => onClickOption(option.oid)}>{option.desc} - {state.optionChosen[option.oid] ? 'true' : 'false'}</Text>
         </View>
       ))}
       {hasChosenOption && questionData.isMCQ && !questionAnswered && <Button onClick={() =>onClickAffirm()}>确定</Button>}

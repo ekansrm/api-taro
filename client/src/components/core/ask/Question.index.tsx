@@ -16,7 +16,7 @@ const QuestionObserver = observer(QuestionView)
 const Question = ({questionData, questionOptionChosen, questionAnswered, onClickQuestionAffirm, onClickQuestionOption, }: Props) => {
 
   const store = new QuestionState()
-  const {optionChosen} = store
+  // const {optionChosen} = store
 
   const intactQuestionOptionChosenInit  = buildOptionChosenInitial(questionOptionChosen, questionData)
   store.init(intactQuestionOptionChosenInit);
@@ -29,7 +29,7 @@ const Question = ({questionData, questionOptionChosen, questionAnswered, onClick
   return  (
     <QuestionObserver
       questionData={questionData}
-      questionOptionChosen={optionChosen}
+      state={store}
       questionAnswered={questionAnswered}
       onClickOption={clickOptionHandler}
       onClickAffirm={onClickQuestionAffirm}

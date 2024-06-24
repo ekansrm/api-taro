@@ -12,7 +12,7 @@ const QuestObserver = observer(QuestView);
 
 const Quest = ({ questionDataList }: Props) => {
 
-  console.log('11')
+  console.log('状态不拆分')
 
   const questState = new QuestState();
 
