@@ -2,13 +2,10 @@ import Question from '@/components/core/ask/Question.index';
 import {QuestionData} from "@/components/core/ask/model/types";
 import QuestView from "@/components/core/ask/Quest.view";
 import QuestState from "@/components/core/ask/Quest.state";
-import {observer} from "mobx-react-lite";
 
 interface Props {
   questionDataList: QuestionData[];
 }
-
-const QuestObserver = observer(QuestView);
 
 const Quest = ({ questionDataList }: Props) => {
 
@@ -72,7 +69,7 @@ const Quest = ({ questionDataList }: Props) => {
   }
 
   return (
-    <QuestObserver
+    <QuestView
       questionDataList={questionDataList}
       questionPackBuilder={questionPackBuilder}
     />
