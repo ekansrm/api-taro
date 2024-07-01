@@ -17,7 +17,9 @@ const config = {
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
-  plugins: [],
+  plugins: [
+    '@tarojs/plugin-mock'
+  ],
   defineConstants: {
   },
   copy: {

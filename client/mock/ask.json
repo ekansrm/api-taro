@@ -1,0 +1,264 @@
+{
+  "propertyLabel": [
+    {
+      "pid": "SEX",
+      "name": "性别",
+      "type": "PropertyType.STRING"
+    },
+    {
+      "pid": "RELATION",
+      "name": "关系",
+      "type": "PropertyType.STRING"
+    },
+    {
+      "pid": "OCCATION",
+      "name": "场合",
+      "type": "PropertyType.STRING"
+    }
+  ],
+  "question": [
+    {
+      "qid": "q1",
+      "desc": "要送的人和你是什么关系",
+      "options": [
+        {
+          "oid": "o1",
+          "desc": "情侣",
+          "propertyFunctions": [
+            {
+              "pid": "RELATION",
+              "operator": "PropertyOperator.UNIQUE",
+              "operands": [
+                {
+                  "type": "PropertyType.STRING",
+                  "refer": false,
+                  "value": "COUPLE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "oid": "o2",
+          "desc": "父母",
+          "propertyFunctions": [
+            {
+              "pid": "RELATION",
+              "operator": "PropertyOperator.UNIQUE",
+              "operands": [
+                {
+                  "type": "PropertyType.STRING",
+                  "refer": false,
+                  "value": "PARENT"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "oid": "o3",
+          "desc": "孩子",
+          "propertyFunctions": [
+            {
+              "pid": "RELATION",
+              "operator": "PropertyOperator.UNIQUE",
+              "operands": [
+                {
+                  "type": "PropertyType.STRING",
+                  "refer": false,
+                  "value": "CHILDREN"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "propertyHit": [
+        "RELATION",
+        "RELATION",
+        "RELATION"
+      ],
+      "propertyUse": [
+        "RELATION"
+      ],
+      "propertyBlocks": [
+        {
+          "pid": "RELATION",
+          "operator": "PropertyComparator.NOT_EMPTY",
+          "operands": [
+            {
+              "type": "PropertyType.STRING",
+              "refer": false,
+              "value": ""
+            }
+          ],
+          "weight": 100
+        }
+      ],
+      "propertyPrefer": [
+        {
+          "pid": "RELATION",
+          "operator": "PropertyComparator.EMPTY",
+          "operands": [
+            {
+              "type": "PropertyType.STRING",
+              "refer": false,
+              "value": ""
+            }
+          ],
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "qid": "q2",
+      "desc": "要送的人的性别",
+      "options": [
+        {
+          "oid": "a",
+          "desc": "男",
+          "propertyFunctions": [
+            {
+              "pid": "SEX",
+              "operator": "PropertyOperator.UNIQUE",
+              "operands": [
+                {
+                  "type": "PropertyType.STRING",
+                  "refer": false,
+                  "value": "MALE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "oid": "b",
+          "desc": "女",
+          "propertyFunctions": [
+            {
+              "pid": "SEX",
+              "operator": "PropertyOperator.UNIQUE",
+              "operands": [
+                {
+                  "type": "PropertyType.STRING",
+                  "refer": false,
+                  "value": "FEMALE"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "propertyHit": [
+        "SEX",
+        "SEX"
+      ],
+      "propertyUse": [
+        "SEX"
+      ],
+      "propertyBlocks": [
+        {
+          "pid": "SEX",
+          "operator": "PropertyComparator.NOT_EMPTY",
+          "operands": [
+            {
+              "type": "PropertyType.STRING",
+              "refer": false,
+              "value": ""
+            }
+          ],
+          "weight": 100
+        }
+      ],
+      "propertyPrefer": [
+        {
+          "pid": "SEX",
+          "operator": "PropertyComparator.EMPTY",
+          "operands": [
+            {
+              "type": "PropertyType.STRING",
+              "refer": false,
+              "value": ""
+            }
+          ],
+          "weight": 90
+        }
+      ]
+    },
+    {
+      "qid": "q3",
+      "desc": "在什么场合送？",
+      "options": [
+        {
+          "oid": "a",
+          "desc": "生日",
+          "propertyFunctions": [
+            {
+              "pid": "OCCATION",
+              "operator": "PropertyOperator.UNIQUE",
+              "operands": [
+                {
+                  "type": "PropertyType.STRING",
+                  "refer": false,
+                  "value": "生日"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "oid": "b",
+          "desc": "过年",
+          "propertyFunctions": [
+            {
+              "pid": "OCCATION",
+              "operator": "PropertyOperator.UNIQUE",
+              "operands": [
+                {
+                  "type": "PropertyType.STRING",
+                  "refer": false,
+                  "value": "过年"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "propertyHit": [
+        "OCCATION",
+        "OCCATION"
+      ],
+      "propertyUse": [
+        "OCCATION"
+      ],
+      "propertyBlocks": [
+        {
+          "pid": "OCCATION",
+          "operator": "PropertyComparator.NOT_EMPTY",
+          "operands": [
+            {
+              "type": "PropertyType.STRING",
+              "refer": false,
+              "value": ""
+            }
+          ],
+          "weight": 100
+        }
+      ],
+      "propertyPrefer": [
+        {
+          "pid": "OCCATION",
+          "operator": "PropertyComparator.NOT_EMPTY",
+          "operands": [
+            {
+              "type": "PropertyType.STRING",
+              "refer": false,
+              "value": ""
+            }
+          ],
+          "weight": 70
+        }
+      ]
+    }
+  ]
+}
