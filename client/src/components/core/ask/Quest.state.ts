@@ -12,11 +12,9 @@ class QuestState {
 
   context: AskContext = {
     questions: {},
-    propertyPool: {},
-    propertyPoolHistory: {},
-    questionAnsweredOrder: {},
+    propertyPool: [],
     questionOptionChosen: {},
-    questionAnswered: {},
+    questionAnsweredOrder: [],
   };
 
   loadQuestions(questions: Question[]) {

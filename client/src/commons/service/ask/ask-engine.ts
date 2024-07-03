@@ -7,11 +7,7 @@ import {
   PropertyType,
   PropertyValue
 } from '@/commons/model/ask/property';
-import {size} from "lodash";
 import {AskContext} from "@/commons/service/ask/ask-context";
-
-
-
 
 function processPropertyFunction(func: PropertyFunction, value: PropertyValue): PropertyValue {
   switch (func.operator) {
@@ -92,8 +88,8 @@ function propertyEvaluateWeight(propertyCache: {[pid: string]: PropertyValue}, e
   var totalWeight = 0;
   evaluatorList.map(evaluator =>{
 
-    var proertyValue = propertyCache[evaluator.pid];
-    if(evaluateProperty(evaluator, proertyValue)) {
+    var propertyValue = propertyCache[evaluator.pid];
+    if(evaluateProperty(evaluator, propertyValue)) {
       totalWeight += evaluator.weight;
     }
 
@@ -119,8 +115,9 @@ export function route(context: AskContext): string  {
   let qid: string = '';
   let maxWeight: number = 0;
 
+  const currentPropertyCache: {[pid: string]: PropertyValue} = context.propertyPool[context.propertyPool.length - 1];
   for (const question of Object.values(context.questions)) {
-    const rst: {blocks: number, prefer:number, }  = evaluateQuestion(context.propertyPool, question);
+    const rst: {blocks: number, prefer:number, }  = evaluateQuestion(currentPropertyCache, question);
 
     if(rst.blocks > 0){
       continue
@@ -138,19 +135,9 @@ export function route(context: AskContext): string  {
 
 export function rollback(context: AskContext, qNum: number): void {
 
-  // 移除回答次序, questionLog[qid] > qNum 的值删除掉
-  for (const [qid, qNum2] of Object.entries(context.questionAnsweredOrder)) {
-    if(qNum2 > qNum) {
-      delete context.questionAnsweredOrder[qid];
-      delete context.questionOptionChosen[qid];
-      delete context.propertyPoolHistory[qNum2]
-      context.questionAnswered[qid] = false;
-    }
-  }
-
-  // 恢复属性池
-
-  context.propertyPool = context.propertyPoolHistory[qNum];
+  // 回滚到
+  context.questionAnsweredOrder = context.questionAnsweredOrder.slice(0, qNum);
+  context.propertyPool = context.propertyPool.slice(0, qNum);
 
 }
 
@@ -183,10 +170,8 @@ export function evaluate(context: AskContext, qid: string, oidList: string[]): v
 
   )
 
-
   // 记录回答次序
-  context.questionAnswered[qid] = true;
-  context.questionAnsweredOrder[qid] = size(context.questionAnsweredOrder) + 1;
+  context.questionAnsweredOrder.push(qid);
 
 
 }
