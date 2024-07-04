@@ -10,3 +10,8 @@ export interface QuestionOptionData {
   oid: string;
   desc: string;
 }
+
+
+export interface QuestionStatus {
+  answered: boolean;
+}

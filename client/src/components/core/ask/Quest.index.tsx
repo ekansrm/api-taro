@@ -9,11 +9,9 @@ interface Props {
 
 const Quest = ({ questionDataList }: Props) => {
 
-  console.log('状态不拆分')
-
   const questState = new QuestState();
 
-  const {questionAnswered, questionOptionChosen} = questState;
+  const {questionStatusMap, questionOptionChosen} = questState;
 
   const qidList = questionDataList.map(q => q.qid);
 
@@ -59,9 +57,11 @@ const Quest = ({ questionDataList }: Props) => {
 
   const questionPackBuilder = (question: QuestionData) => {
 
+    const status = questionStatusMap[question.qid]
+
     return <Question
       questionData={question}
-      questionAnswered={questionAnswered[question.qid]}
+      questionAnswered={status}
       questionOptionChosen={questionOptionChosen[question.qid]}
       onClickQuestionAffirm={() => questionAffirmHandler(question.qid)}
       onClickQuestionOption={(oid:string) => {questionOptionClickHandler(question.qid, oid)}}

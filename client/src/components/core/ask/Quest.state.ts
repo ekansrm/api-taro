@@ -2,6 +2,7 @@ import {makeAutoObservable} from "mobx";
 import {AskContext} from "@/commons/service/ask/ask-context";
 import {Question} from "@/commons/model/ask/question";
 import {route} from "@/commons/service/ask/ask-engine";
+import {QuestionStatus} from "@/components/core/ask/model/types";
 
 
 class QuestState {
@@ -40,12 +41,14 @@ class QuestState {
   }
 
   questionAnswered: {[qid:string]: boolean} = {};
+  questionStatusMap: {[qid:string]: QuestionStatus} = {};
 
   questionOptionChosen: {[qid:string]:{[oid:string]:boolean}} = {};
 
   init(qidList: string[]) {
     qidList.forEach(qid => {
       this.questionAnswered[qid] = false;
+      this.questionStatusMap[qid] = {answered: false};
       this.questionOptionChosen[qid] = {};
     });
   }
@@ -59,6 +62,7 @@ class QuestState {
 
   setQuestionAnswered(qid: string, value: boolean) {
     this.questionAnswered[qid] = value;
+    this.questionStatusMap[qid].answered = value;
   }
 
 }

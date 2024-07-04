@@ -1,11 +1,11 @@
 import {Button, Text, View} from '@tarojs/components';
-import {QuestionData} from "@/components/core/ask/model/types";
+import {QuestionData, QuestionStatus} from "@/components/core/ask/model/types";
 import {observer} from "mobx-react-lite";
 
 interface Props {
 
   questionData: QuestionData,
-  questionAnswered: boolean,
+  questionAnswered: QuestionStatus,
   questionOptionChosen: {},
 
   onClickOption: (oid: string) => void
@@ -22,13 +22,13 @@ const QuestionView = observer(({ questionData, questionAnswered, questionOptionC
 
   return (
     <View>
-      <Text>{questionData.desc} - {questionAnswered? '已答': '未答'}</Text>
+      <Text>{questionData.desc} - {questionAnswered.answered? '已答': '未答'}</Text>
       {questionData.options.map((option) => (
         <View key={option.oid}>
           <Text onClick={() => onClickOption(option.oid)}>{option.desc} - {questionOptionChosen[option.oid] ? 'true' : 'false'}</Text>
         </View>
       ))}
-      {hasChosenOption && questionData.isMCQ && !questionAnswered && <Button onClick={() =>onClickAffirm()}>确定</Button>}
+      {hasChosenOption && questionData.isMCQ && !questionAnswered.answered && <Button onClick={() =>onClickAffirm()}>确定</Button>}
     </View>
   );
 })
