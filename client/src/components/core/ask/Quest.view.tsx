@@ -2,6 +2,7 @@ import {View} from "@tarojs/components";
 
 import {QuestionData} from "@/components/core/ask/model/types";
 import React from "react";
+import {observer} from "mobx-react-lite";
 
 interface Props {
 
@@ -12,7 +13,7 @@ interface Props {
 }
 
 
-const QuestView = ({ questionDataList, questionPackBuilder}: Props) => {
+const QuestView = observer(({ questionDataList, questionPackBuilder}: Props) => {
   return (
     <View>
       {questionDataList.map((question) => (
@@ -20,6 +21,6 @@ const QuestView = ({ questionDataList, questionPackBuilder}: Props) => {
       ))}
     </View>
   );
-};
+});
 
 export default QuestView;

@@ -2,11 +2,9 @@ import Taro from '@tarojs/taro'
 
 import { Component, PropsWithChildren } from 'react'
 import { View } from '@tarojs/components'
-// import TestMobx from "@/components/core/ask/TestMobx";
 import Ask from "@/components/core/ask/index.weapp";
-// import TestMobx from "@/components/core/ask/TestMobx";
 import './index.scss'
-import path from "path";
+import State from "./state";
 
 
 
@@ -20,19 +18,24 @@ export default class Index extends Component<PropsWithChildren> {
   componentDidHide () { }
 
   render () {
-    Taro.request({
-      url: 'http://127.0.0.1:9527/api/user/1',
-      method: 'GET',
-      data: {
-        // 请求参数
-      },
-      success(res) {
-        console.log(res.data)
-      },
-      fail(err) {
-        console.log(err)
-      }
-    })
+
+    const state = new State()
+
+    const {questions} = state
+
+    // Taro.request({
+    //   url: 'http://127.0.0.1:9527/api/user/1',
+    //   method: 'GET',
+    //   data: {
+    //     // 请求参数
+    //   },
+    //   success(res) {
+    //     console.log(res.data)
+    //   },
+    //   fail(err) {
+    //     console.log(err)
+    //   }
+    // })
 
 
     const fs = Taro.getFileSystemManager();
@@ -47,26 +50,26 @@ export default class Index extends Component<PropsWithChildren> {
 
     })
 
-    fs.getFileInfo({
-      filePath: `${Taro.env.USER_DATA_PATH}`,
-      success(res) {
-        console.log(res)
-      },
-      fail(res) {
-        console.log(res)
-      }
-
-    })
-
-    fs.mkdir({
-      dirPath: '123',
-      success(res) {
-        console.log(res)
-      },
-      fail(res) {
-        console.log(res)
-      }
-    })
+    // fs.getFileInfo({
+    //   filePath: `${Taro.env.USER_DATA_PATH}`,
+    //   success(res) {
+    //     console.log(res)
+    //   },
+    //   fail(res) {
+    //     console.log(res)
+    //   }
+    //
+    // })
+    //
+    // fs.mkdir({
+    //   dirPath: '123',
+    //   success(res) {
+    //     console.log(res)
+    //   },
+    //   fail(res) {
+    //     console.log(res)
+    //   }
+    // })
 
     fs.readFile(
       {
@@ -76,6 +79,10 @@ export default class Index extends Component<PropsWithChildren> {
           if( typeof res.data === 'string' ) {
             const json = JSON.parse(res.data)
             console.log(json)
+            state.updateQuestions(
+              json.question,
+            )
+
           } else {
             console.log(res.data)
           }
@@ -94,8 +101,9 @@ export default class Index extends Component<PropsWithChildren> {
 
     return (
       <View className='index'>
-        <Ask />
-         {/*<TestMobx />*/}
+        <Ask
+          questions={questions}
+        />
       </View>
     )
   }
